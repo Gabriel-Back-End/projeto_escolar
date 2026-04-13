@@ -88,7 +88,7 @@ $pagina_atual = basename($_SERVER['PHP_SELF']);
 <nav class="navbar">
     <div class="navbar-container">
         
-        <a href="financeiro.php" class="navbar-logo">
+        <a href="dashboard.php" class="navbar-logo">
             <span>🚐</span> SISTEMA DO TIO
         </a>
         

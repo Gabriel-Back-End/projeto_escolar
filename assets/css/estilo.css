@@ -149,3 +149,50 @@ textarea {
     cursor: pointer;
     text-decoration: underline;
 }
+
+/* Card de cada Aluno - Garantindo que os itens fiquem na mesma linha */
+.item-aluno {
+    background: white;
+    display: flex; /* Mantém input e texto lado a lado */
+    flex-direction: row; /* Força a linha */
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* O "Quadradinho" do número - Agora com largura fixa forçada */
+.input-ordem {
+    width: 50px !important;  /* Largura fixa */
+    min-width: 50px;         /* Garante que não encolha */
+    max-width: 50px;         /* Garante que não cresça */
+    height: 45px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    background: #fff;
+    margin-right: 15px;      /* Espaço entre o número e o nome */
+}
+
+/* Remove as setinhas de aumentar/diminuir do Chrome/Safari para ganhar espaço */
+.input-ordem::-webkit-outer-spin-button,
+.input-ordem::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Informações do Aluno - Ajuste para não colidir */
+.info-aluno {
+    flex: 1; /* Ocupa o restante do espaço */
+    min-width: 0; /* Evita que o texto empurre o input para fora */
+}
+
+.info-aluno strong {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Se o nome for gigante, ele coloca "..." */
+    display: block;
+}
