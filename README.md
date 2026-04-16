@@ -1,5 +1,7 @@
 #Sistema de Gestão para Transporte Escolar
+
 Descrição
+
 Este projeto nasceu da observação direta de uma dor latente no setor de transporte escolar: a dificuldade de gestão financeira. Muitos condutores (os "tios e tias das vans") realizam o controle de pagamentos de forma manual ou descentralizada, o que gera erros, esquecimentos e falta de previsibilidade de caixa.
 
 O sistema foi desenvolvido para ser uma solução centralizada e intuitiva, permitindo que o gestor tenha o controle total sobre o status de pagamento de cada aluno e a saúde financeira do seu serviço em poucos cliques.
