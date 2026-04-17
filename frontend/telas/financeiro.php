@@ -4,28 +4,28 @@ require_once '../../backend/conexao.php';
 $mes_atual = date('m');
 $ano_atual = date('Y');
 
-// 1. Pega o filtro de escola (se houver)
 $escola_filtro = $_GET['id_escola'] ?? '';
-
-// 2. Busca escolas para o filtro
 $escolas = $conn->query("SELECT * FROM escolas WHERE status = 1 ORDER BY nome_escola ASC");
 
-// 3. Query "Cerebral": Busca alunos ativos de escolas também ATIVAS
-$sql = "SELECT a.*, e.nome_escola, p.id as id_pagamento
-        FROM alunos a
+$sql = "SELECT m.*, a.nome_crianca, a.valor_mensalidade, e.nome_escola 
+        FROM mensalidades m
+        JOIN alunos a ON m.id_aluno = a.id
         JOIN escolas e ON a.id_escola = e.id
-        LEFT JOIN pagamentos p ON a.id = p.id_aluno 
-             AND MONTH(p.data_confirmacao) = '$mes_atual' 
-             AND YEAR(p.data_confirmacao) = '$ano_atual'
-        WHERE a.status = 'Ativo' 
-        AND e.status = 1"; // <-- Adicionamos essa linha aqui
+        WHERE (m.status = 'Pendente' OR (m.mes = '$mes_atual' AND m.ano = '$ano_atual'))";
 
 if ($escola_filtro) {
     $sql .= " AND a.id_escola = " . intval($escola_filtro);
 }
 
-$sql .= " ORDER BY p.id ASC, a.nome_crianca ASC"; // Mostra quem NÃO pagou primeiro
+// MUDANÇA AQUI: Ordenamos para que 'Pendente' apareça antes de 'Pago'
+// E quem deve meses mais antigos (ex: Março) apareça antes de Abril.
+$sql .= " ORDER BY m.status ASC, m.ano ASC, m.mes ASC, a.nome_crianca ASC";
+
 $result = $conn->query($sql);
+
+if (!$result) {
+    die("Erro na query: " . $conn->error);
+}
 ?>
 
 <!DOCTYPE html>
@@ -60,21 +60,23 @@ $result = $conn->query($sql);
         <?php endwhile; ?>
     </div>
 
-    <?php while($aluno = $result->fetch_assoc()): ?>
-        <div class="card-financeiro" style="border-left: 5px solid <?= $aluno['id_pagamento'] ? '#2ecc71' : '#e74c3c' ?>;">
+    <?php while($item = $result->fetch_assoc()): ?>
+        <div class="card-financeiro" style="border-left: 5px solid <?= $item['status'] == 'Pago' ? '#2ecc71' : '#e74c3c' ?>;">
             <div>
-                <strong><?= $aluno['nome_crianca'] ?></strong>
+                <strong><?= $item['nome_crianca'] ?></strong>
                 <div style="font-size: 12px; color: #7f8c8d;">
-                    <?= $aluno['nome_escola'] ?> | R$ <?= number_format($aluno['valor_mensalidade'], 2, ',', '.') ?>
+                    Ref: <?= str_pad($item['mes'], 2, '0', STR_PAD_LEFT) ?>/<?= $item['ano'] ?> | 
+                    <?= $item['nome_escola'] ?> | 
+                    R$ <?= number_format($item['valor_devido'], 2, ',', '.') ?>
                 </div>
             </div>
 
             <div>
-                <?php if($aluno['id_pagamento']): ?>
-                    <span class="status-pago">✅ PAGO</span>
+                <?php if($item['status'] == 'Pago'): ?>
+                    <span class="status-pago">✅ PAGO (<?= $item['metodo_pagamento'] ?>)</span>
                 <?php else: ?>
                     <button class="btn-salvar" style="margin:0; padding: 5px 10px; background: #e74c3c;" 
-                            onclick="abrirModal(<?= $aluno['id'] ?>, '<?= $aluno['nome_crianca'] ?>', <?= $aluno['valor_mensalidade'] ?>)">
+                            onclick="abrirModal(<?= $item['id'] ?>, '<?= $item['nome_crianca'] ?>', '<?= $item['mes'] ?>/<?= $item['ano'] ?>')">
                         ❌ DAR BAIXA
                     </button>
                 <?php endif; ?>
@@ -89,23 +91,27 @@ $result = $conn->query($sql);
         <p>Como o aluno <strong id="nomeAlunoModal"></strong> pagou?</p>
         
         <form action="../../backend/acoes/confirmar_pagamento.php" method="POST">
-            <input type="hidden" name="id_aluno" id="idAlunoModal">
+            <input type="hidden" name="id_mensalidade" id="idMensalidadeModal">
             
             <div class="opcoes-pagamento">
                 <button type="submit" name="metodo" value="Pix" class="btn-metodo pix">Pix</button>
                 <button type="submit" name="metodo" value="Dinheiro" class="btn-metodo dinheiro">Dinheiro</button>
                 <button type="submit" name="metodo" value="Cartão" class="btn-metodo cartao">Cartão</button>
             </div>
-            
-            <button type="button" class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
         </form>
     </div>
 </div>
 
 <script>
-function abrirModal(id, nome) {
-    document.getElementById('idAlunoModal').value = id;
-    document.getElementById('nomeAlunoModal').innerText = nome;
+function abrirModal(idMensalidade, nomeAluno, referencia) {
+    // 1. Coloca o ID da mensalidade no campo escondido do formulário
+    document.getElementById('idMensalidadeModal').value = idMensalidade;
+    
+    // 2. Atualiza o texto do modal para o Tio saber o que está fazendo
+    // Vamos mostrar: "João Silva (Ref: 04/2026)"
+    document.getElementById('nomeAlunoModal').innerText = nomeAluno + " (Ref: " + referencia + ")";
+    
+    // 3. Exibe o modal
     document.getElementById('modalPagamento').style.display = 'block';
 }
 

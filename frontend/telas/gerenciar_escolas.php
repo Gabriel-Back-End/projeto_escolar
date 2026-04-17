@@ -76,7 +76,7 @@ $result = $conn->query($sql);
                     <strong><?php echo $escola['nome_escola']; ?></strong>
                     <br>
                     <small style="color: #888; font-style: italic;">
-                        (Tipo: <?php echo $escola['tipo_periodo']; ?>)
+                        (Tipo: <?php echo $escola['tipo']; ?>)
                     </small>
                 </td>
                 <td>
