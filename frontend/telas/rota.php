@@ -63,6 +63,7 @@ if ($escola_id && $periodo_filtro) {
             gap: 5px;
         }
     </style>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
 
@@ -70,7 +71,7 @@ if ($escola_id && $periodo_filtro) {
 
     <?php include '../includes/menu.php'; ?>
 
-    <h2>📍 Planejamento de Rota</h2>
+    <h2><i class="ph ph-magnifying-glass"></i> Planejamento de Rota</h2>
 
     <div class="seletor-escola">
         <form action="" method="GET" style="display: grid; gap: 15px;">
@@ -90,8 +91,8 @@ if ($escola_id && $periodo_filtro) {
             <div class="form-group">
                 <label>Qual turno você vai fazer?</label>
                 <div style="display: flex; gap: 10px;">
-                    <button type="submit" name="periodo" value="Manhã" class="btn-salvar <?= $periodo_filtro == 'Manhã' ? '' : 'btn-outline' ?>" style="flex:1; background: <?= $periodo_filtro == 'Manhã' ? '#2ecc71' : '#ccc' ?>">☀️ Manhã</button>
-                    <button type="submit" name="periodo" value="Tarde" class="btn-salvar <?= $periodo_filtro == 'Tarde' ? '' : 'btn-outline' ?>" style="flex:1; background: <?= $periodo_filtro == 'Tarde' ? '#e67e22' : '#ccc' ?>">🌇 Tarde</button>
+                    <button type="submit" name="periodo" value="Manhã" class="btn-salvar <?= $periodo_filtro == 'Manhã' ? '' : 'btn-outline' ?>" style="flex:1; background: <?= $periodo_filtro == 'Manhã' ? '#2ecc71' : '#ccc' ?>"><i class="ph ph-sun"></i> Manhã</button>
+                    <button type="submit" name="periodo" value="Tarde" class="btn-salvar <?= $periodo_filtro == 'Tarde' ? '' : 'btn-outline' ?>" style="flex:1; background: <?= $periodo_filtro == 'Tarde' ? '#e67e22' : '#ccc' ?>"><i class="ph ph-cloud-sun"></i> Tarde</button>
                 </div>
             </div>
             <?php endif; ?>
@@ -102,12 +103,12 @@ if ($escola_id && $periodo_filtro) {
         
         <div style="margin-bottom: 15px; display: flex; justify-content: flex-end;">
             <a href="imprimir_rota.php?id_escola=<?= $escola_id ?>&periodo=<?= $periodo_filtro ?>" target="_blank" class="btn-print">
-                🖨️ Imprimir Lista
+                <i class="ph ph-printer"></i> Imprimir Lista
             </a>
         </div>
 
         <div class="alerta-integral">
-            💡 Mostrando alunos de período <strong><?= $periodo_filtro ?></strong> e também os de <strong>Tempo Integral</strong> desta escola.
+            <i class="ph ph-lightbulb"></i> Mostrando alunos de período <strong><?= $periodo_filtro ?></strong> e também os de <strong>Tempo Integral</strong> desta escola.
         </div>
 
         <?php if ($alunos->num_rows > 0): ?>
@@ -123,12 +124,12 @@ if ($escola_id && $periodo_filtro) {
                     </div>
                     <div style="flex:1">
                         <strong style="display:block"><?= $aluno['nome_crianca'] ?></strong>
-                        <small style="color:#666">🏠 <?= $aluno['endereco'] ?></small>
+                        <small style="color:#666"><i class="ph ph-house"></i> <?= $aluno['endereco'] ?></small>
                         <?php if($aluno['periodo'] == 'Integral'): ?>
                             <span style="font-size:10px; background:#eee; padding:2px 5px; border-radius:3px; margin-left:5px;">INTEGRAL</span>
                         <?php endif; ?>
                     </div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=<?= urlencode($aluno['endereco']) ?>" target="_blank" style="text-decoration:none; font-size:20px;">🗺️</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=<?= urlencode($aluno['endereco']) ?>" target="_blank" style="text-decoration:none; font-size:20px;"><i class="ph ph-map-pin-area"></i></a>
                 </div>
             <?php endwhile; ?>
         <?php else: ?>

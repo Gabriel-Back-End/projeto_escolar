@@ -84,34 +84,36 @@
 <?php
 $pagina_atual = basename($_SERVER['PHP_SELF']);
 ?>
-
+<head>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
 <nav class="navbar">
     <div class="navbar-container">
         
         <a href="dashboard.php" class="navbar-logo">
-            <span>🚐</span> SISTEMA DO TIO
+            <i class="ph ph-lightbulb" style="margin-right: 4px;"></i> SISTEMA DO TIO
         </a>
         
         <div class="navbar-links">
 
             <a href="dashboard.php" class="<?= ($pagina_atual == 'dashboard.php') ? 'active' : '' ?>">
-                🏠 Início
+                <i class="ph ph-house-line" style="margin-right: 4px;"></i>Início
             </a>
 
             <a href="financeiro.php" class="<?= ($pagina_atual == 'financeiro.php') ? 'active' : '' ?>">
-                💰 Financeiro
+                <i class="ph ph-money" style="margin-right: 4px;"></i> Financeiro
             </a>
             
             <a href="gerenciar_alunos.php" class="<?= ($pagina_atual == 'gerenciar_alunos.php' || $pagina_atual == 'cadastro_alunos.php' || $pagina_atual == 'editar_aluno.php') ? 'active' : '' ?>">
-                👥 Alunos
+                <i class="ph ph-users" style="margin-right: 4px;"></i> Alunos
             </a>
             
             <a href="rota.php" class="<?= ($pagina_atual == 'rota.php' || $pagina_atual == 'configurar_rota.php') ? 'active' : '' ?>">
-                📍 Rota
+                <i class="ph ph-magnifying-glass" style="margin-right: 4px;"></i> Rota
             </a>
             
             <a href="gerenciar_escolas.php" class="<?= ($pagina_atual == 'gerenciar_escolas.php') ? 'active' : '' ?>">
-                🏫 Escolas
+                <i class="ph ph-backpack" style="margin-right: 4px;"></i> Escolas
             </a>
         </div>
     </div>

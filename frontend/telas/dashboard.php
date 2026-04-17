@@ -59,23 +59,23 @@ $quantos_faltam = $total_alunos - $quantos_pagaram;
 
     <?php include '../includes/menu.php'; ?>
 
-    <h2>Bem-vindo, Tio! 👋</h2>
+    <h2>Bem-vindo, Tio Fabio! 👋</h2>
 
     <p>Aqui está o resumo do seu transporte para <strong><?= date('M / Y') ?></strong>:</p>
 
     <div class="grid-cards">
         <div class="card c-roxo">
-            <h3>👥 Alunos Ativos</h3>
+            <h3><i class="ph-light ph-student"></i>  Alunos Ativos</h3>
             <span class="valor"><?= $total_alunos ?></span>
         </div>
 
         <div class="card c-verde">
-            <h3>✅ Já Pagaram</h3>
+            <h3><i class="ph-bold ph-check-fat"></i> Já Pagaram</h3>
             <span class="valor"><?= $quantos_pagaram ?> <small style="font-size: 12px; color: #7f8c8d;">alunos</small></span>
         </div>
 
         <div class="card c-laranja">
-            <h3>⏳ Faltam Pagar</h3>
+            <h3><i class="ph-bold ph-hourglass-medium"></i> Faltam Pagar</h3>
             <span class="valor"><?= $quantos_faltam ?> <small style="font-size: 12px; color: #7f8c8d;">alunos</small></span>
         </div>
 

@@ -88,6 +88,7 @@ $result = $stmt->get_result();
         .acoes-links { display: flex; gap: 15px; font-size: 18px; }
         .acoes-links a { text-decoration: none; }
     </style>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
 
@@ -97,18 +98,18 @@ $result = $stmt->get_result();
 
     <div class="topo-acoes">
         <div>
-            <h2 style="margin:0">👥 Alunos</h2>
+            <h2 style="margin:0"><i class="ph-light ph-student"></i> Alunos</h2>
             <p style="color:#7f8c8d; margin:0; font-size:14px;">Total de alunos cadastrados</p>
         </div>
         
         <a href="cadastro_alunos.php" class="btn-novo">
-            <span>➕</span> Novo Aluno
+            <span><i class="ph-light ph-plus"></i></span> Novo Aluno
         </a>
     </div>
 
     <form action="" method="GET" class="busca-container" style="margin-bottom: 25px;">
         <input type="text" name="busca" class="busca-input" placeholder="Buscar por nome da criança..." value="<?= htmlspecialchars($busca) ?>">
-        <button type="submit" class="btn-busca">🔍 Buscar</button>
+        <button type="submit" class="btn-busca"><i class="ph-bold ph-magnifying-glass"></i> Buscar</button>
     </form>
 
     <div class="tabela-container">
@@ -127,7 +128,7 @@ $result = $stmt->get_result();
                     <tr>
                         <td>
                             <strong style="color:#2c3e50"><?= $aluno['nome_crianca'] ?></strong><br>
-                            <small style="color:#7f8c8d">🏫 <?= $aluno['nome_escola'] ?></small>
+                            <small style="color:#7f8c8d"><i class="ph ph-backpack" style="margin-right: 4px;"></i> <?= $aluno['nome_escola'] ?></small>
                         </td>
                         <td>
                             <span style="font-size: 13px;"><?= $aluno['periodo'] ?></span>
