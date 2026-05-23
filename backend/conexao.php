@@ -1,8 +1,8 @@
 <?php
-    $host = '127.0.0.1'; // Usar 127.0.0.1 é melhor que 'localhost' para garantir o uso da porta
-    $user = 'root';
-    $pass = ''; // A senha padrão do XAMPP geralmente é vazia
-    $dbname = 'projeto_escolar';
+    $host = 'sql111.infinityfree.com';
+    $user = 'if0_41997226';
+    $pass = 'Ga13030800'; // A senha padrão do XAMPP geralmente é vazia
+    $dbname = 'if0_41997226_projeto_escolar';
 
     $portas = [3306, 8111];
     $conn = null;
