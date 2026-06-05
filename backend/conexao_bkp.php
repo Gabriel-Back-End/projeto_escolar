@@ -1,10 +1,10 @@
 <?php
-    $host = 'localhost';
-    $user = 'root';
-    $pass = ''; // A senha padrão do XAMPP geralmente é vazia
+    $host = 'projetoescolar-ailabs.l.aivencloud.com';
+    $user = 'avnadmin';
+    $pass = 'AVNS_dEP78CHvSDyyEWUPt-l';
     $dbname = 'projeto_escolar';
 
-    $portas = [3306, 8111];
+    $portas = [3306, 16947];
     $conn = null;
 
     // Desativa temporariamente os relatórios de erro do mysqli para não sujar a tela

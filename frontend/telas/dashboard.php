@@ -95,7 +95,20 @@ $quantos_faltam = $res_pendentes->fetch_assoc()['total'] ?? 0;
         <a href="../../backend/acoes/gerar_mensalidades.php" 
            onclick="return confirm('Deseja gerar as mensalidades do mês atual para todos os alunos?')"
            class="btn-salvar" style="background: #27ae60; text-decoration: none;">
-           🚀 Gerar Mensalidades de <?= date('F') ?>
+            🚀 Gerar Mensalidades de <?= [
+                'January'   => 'Janeiro',
+                'February'  => 'Fevereiro',
+                'March'     => 'Março',
+                'April'     => 'Abril',
+                'May'       => 'Maio',
+                'June'      => 'Junho',
+                'July'      => 'Julho',
+                'August'    => 'Agosto',
+                'September' => 'Setembro',
+                'October'   => 'Outubro',
+                'November'  => 'Novembro',
+                'December'  => 'Dezembro'
+            ][date('F')] ?>
         </a>
     </div>
 
