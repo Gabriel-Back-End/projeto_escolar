@@ -28,5 +28,8 @@ while ($aluno = $alunos->fetch_assoc()) {
 
 echo "Sucesso! $gerados novas mensalidades geradas. $ja_existiam já estavam no sistema.";
 
-header("Location: ../index.php");
+header("Location: ../../index.php");
+
 exit();
+
+?>

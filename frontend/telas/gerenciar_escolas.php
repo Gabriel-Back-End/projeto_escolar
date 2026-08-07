@@ -12,6 +12,7 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <title>Gerenciar Escolas - Sistema do Tio</title>
     <link rel="stylesheet" href="../../assets/css/estilo.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         .form-escola {
             background: #fff;

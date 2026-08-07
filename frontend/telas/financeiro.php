@@ -74,6 +74,7 @@ uasort($alunos_financeiro, function($a, $b) {
     <meta charset="UTF-8">
     <title>Financeiro - Sistema do Tio</title>
     <link rel="stylesheet" href="../../assets/css/estilo.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         .filtro-escolas { display: flex; gap: 10px; overflow-x: auto; padding: 10px 0; margin-bottom: 20px; }
         .btn-filtro { padding: 8px 15px; border-radius: 20px; border: 1px solid #3498db; background: white; color: #3498db; cursor: pointer; text-decoration: none; white-space: nowrap; font-size: 14px; }

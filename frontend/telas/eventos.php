@@ -20,25 +20,36 @@ $eventos = $conn->query($sql);
         .grid-eventos { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px; }
         .card-evento { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid #eee; }
         .card-evento img { width: 100%; height: 150px; object-fit: cover; }
+        .btn-gerenciar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            
+            display: block;         
+            margin: 20px auto 0;    
+            width: 80%;    
+            
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
         .conteudo-evento { padding: 15px; }
         .btn-novo-evento { background: #9b59b6; color: white; padding: 12px 20px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px; }
         .badge-valor { background: #e74c3c; color: white; padding: 3px 8px; border-radius: 5px; font-size: 12px; }
-        .badge-valor {
-    background: #e74c3c;
-    color: white;
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 12px;
-}
+        .badge-valor { background: #e74c3c; color: white; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 12px; }
 
-.card-evento {
-    transition: transform 0.2s;
-}
+       
 
-.card-evento:hover {
-    transform: translateY(-5px); /* Dá um efeito de flutuar ao passar o mouse */
-}
+        .card-evento {
+            transition: transform 0.2s;
+        }
+
+        .card-evento:hover {
+            transform: translateY(-5px); /* Dá um efeito de flutuar ao passar o mouse */
+        }
     </style>
 </head>
 <body>
@@ -76,7 +87,7 @@ $eventos = $conn->query($sql);
                         <i class="ph ph-calendar"></i> <?= date('d/m/Y', strtotime($ev['data_evento'])) ?>
                     </p>
                     
-                    <a href="detalhes_evento.php?id=<?= $ev['id'] ?>" class="btn-salvar" style="display: block; text-align: center; text-decoration: none; background: #2ecc71; font-size: 13px;">
+                    <a href="detalhes_evento.php?id=<?= $ev['id'] ?>" class="btn-gerenciar" style=" text-align: center; text-decoration: none; background: #2ecc71; font-size: 13px;">
                         Gerenciar Alunos
                     </a>
                 </div>
