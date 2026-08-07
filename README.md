@@ -16,7 +16,7 @@ Status de Mensalidades: Identificação visual rápida de pagamentos efetuados, 
 Otimização de Processos: Substituição de agendas físicas por um banco de dados confiável e acessível.
 
 🛠️ Tecnologias Utilizadas
-Back-end: [PHP ou Python] – Responsável pela lógica de negócios e processamento de dados.
+Back-end: PHP – Responsável pela lógica de negócios e processamento de dados.
 
 Banco de Dados: SQL – Estrutura relacional para garantir a integridade dos dados financeiros.
 
