@@ -18,45 +18,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $valor_mensalidade = !empty($valor) ? $valor : $novo_valor;
 
-    // 2. Prepara o INSERT do Aluno
-    $sql = "INSERT INTO alunos (nome_crianca, nome_responsavel, telefone_responsavel, id_escola, periodo, serie, endereco, valor_mensalidade, dia_vencimento, bairro) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    echo "nome: " . $nome_crianca . "<br>";
+    echo "nome responsavel: " . $nome_responsavel . "<br>";
+    echo "telefone: " . $telefone . "<br>";
+    echo "id escola: " . $id_escola . "<br>";
+    echo "periodo: " . $periodo . "<br>";
+    echo "serie: " . $serie . "<br>";
+    echo "endereco: " . $endereco . "<br>";
+    echo "vencimento: " . $vencimento . "<br>";
+    echo "bairro: " . $bairro . "<br>";
+    echo "id compartilhar: " . $id_compartilhar . "<br>";
+    echo "Valor da Mensalidade: " . $valor_mensalidade . "<br>";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssisssdis", $nome_crianca, $nome_responsavel, $telefone, $id_escola, $periodo, $serie, $endereco, $valor_mensalidade, $vencimento, $bairro);
+    //Descobrir se o aluno vai compartilhar a mensalidade ou será mensalidade única
 
-    if ($stmt->execute()) {
-        $id_aluno = $conn->insert_id; // Pega o ID do aluno que acabou de ser criado
-        $mes_atual = date('Y-m');
+        //Se o valor do id_compartilhar for igual a 0, o aluno cadastrado ele não compartilhará a mensalidade
+        if($id_compartilhar == 0){
+            //Como o aluno que será cadastrado ele não compartilhara a mensalidade temos que atribuir o valor 1 na coluna paga_mensalidade e deixaremos o aluno_titular_id vazio
+                $sql = "INSERT INTO alunos (nome_crianca, nome_responsavel, telefone_responsavel, id_escola, periodo, serie, endereco, valor_mensalidade, dia_vencimento, paga_mensalidade) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sssisssdi", $nome_crianca, $nome_responsavel, $telefone, $id_escola, $periodo, $serie, $endereco, $valor_mensalidade, $vencimento);
 
-        $data = explode('-', $mes_atual);
-        $ano = (int)$data[0];
-        $mes = (int)$data[1];
+                if ($stmt->execute()) {
+                    $id_aluno = $conn->insert_id; // Pega o ID do aluno que acabou de ser criado
+                    $mes_atual = date('Y-m'); // Ex: 2026-04
 
-        // 3. Verifica se é mensalidade compartilhada ou única
-        if ($id_compartilhar != 0 && $novo_valor != 0) {
-            //caso a mensalidade seja compartilhada, vamos colocar o id do novo aluno na coluna men_compartilhada da tabela alunos, e vamos fazer um update para o valor da mensalidade
-                $insert_comp = "UPDATE alunos SET men_compartilhada = ? WHERE id = ?";
-                $stmt_comp = $conn->prepare($insert_comp);
-                $stmt_comp->bind_param("ii", $id_aluno, $id_compartilhar);
-                $stmt_comp->execute();
+                    // 3. Já cria o primeiro registro de pagamento como 'Pendente'
+                    $sql_pagamento = "INSERT INTO pagamentos (id_aluno, mes_referencia, status_pg) VALUES (?, ?, 'Pendente')";
+                    $stmt_pg = $conn->prepare($sql_pagamento);
+                    $stmt_pg->bind_param("is", $id_aluno, $mes_atual);
+                    $stmt_pg->execute();
 
-                $update_valor = "UPDATE alunos SET valor_mensalidade = ? WHERE id = ?";
-                $stmt_update = $conn->prepare($update_valor);
-                $stmt_update->bind_param("di", $valor_mensalidade, $id_compartilhar);
-                $stmt_update->execute();
-        } else {
-            // Mensalidade única
-            $sql_pagamento = "INSERT INTO mensalidades (id_aluno, mes, ano, status, valor_devido) VALUES (?, ?, ?, 'Pendente', ?)";
-            $stmt_pg = $conn->prepare($sql_pagamento);
+                    // Redireciona de volta com sucesso (ou exibe mensagem)
+                        header("Location: ../../frontend/telas/cadastro_alunos.php?sucesso=1");
+                } else {
+                    echo "Erro ao cadastrar: " . $conn->error;
+                }
 
-            $stmt_pg->bind_param("iiid", $id_aluno, $mes, $ano, $valor_mensalidade);
-            $stmt_pg->execute();
+        }else {
+            //Como o aluno que será cadastrado ele compartilhara a mensalidade temos que atribuir o valor 0 na coluna paga_mensalidade e deixaremos o aluno_titular_id com o id do aluno que ele compartilhará a mensalidade
+                $sql = "INSERT INTO alunos (nome_crianca, nome_responsavel, telefone_responsavel, id_escola, periodo, serie, endereco, valor_mensalidade, dia_vencimento, paga_mensalidade, aluno_titular_id) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sssisssdii", $nome_crianca, $nome_responsavel, $telefone, $id_escola, $periodo, $serie, $endereco, $valor_mensalidade, $vencimento, $id_compartilhar);
+                $stmt->execute();
 
-            echo "Aluno e mensalidade cadastrados com sucesso! ID do aluno: $id_aluno";
+                
+                header("Location: ../../frontend/telas/cadastro_alunos.php?sucesso=1");
         }
-
-    } else {
-        echo "Erro ao cadastrar aluno: " . $stmt->error;
-    }
 }

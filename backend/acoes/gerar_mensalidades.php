@@ -26,6 +26,12 @@ while ($aluno = $alunos->fetch_assoc()) {
     }
 }
 
+$delete = "DELETE FROM mensalidades WHERE status='Pago' AND mes != ?";
+$stmtDelete = $conn->prepare($delete);
+$stmtDelete->bind_param("i", $mes);
+$stmtDelete->execute();
+echo $mes;
+
 echo "Sucesso! $gerados novas mensalidades geradas. $ja_existiam já estavam no sistema.";
 
 header("Location: ../../index.php");

@@ -8,11 +8,19 @@ $escola_filtro = $_GET['id_escola'] ?? '';
 $escolas = $conn->query("SELECT * FROM escolas WHERE status = 1 ORDER BY nome_escola ASC");
 
 // Mantemos a query detalhada para coletar todas as parcelas individuais
-$sql = "SELECT m.*, a.nome_crianca, a.id as id_aluno, a.valor_mensalidade, e.nome_escola 
-        FROM mensalidades m
-        JOIN alunos a ON m.id_aluno = a.id
-        JOIN escolas e ON a.id_escola = e.id
-        WHERE (m.status = 'Pendente' OR (m.mes = '$mes_atual' AND m.ano = '$ano_atual'))";
+$sql = "SELECT 
+    m.*, 
+    a.nome_crianca, 
+    a.id AS id_aluno, 
+    a.valor_mensalidade, 
+    e.nome_escola,
+    titular.nome_crianca AS nome_aluno_titular
+FROM mensalidades m
+JOIN alunos a ON m.id_aluno = a.id
+JOIN escolas e ON a.id_escola = e.id
+LEFT JOIN alunos titular ON a.aluno_titular_id = titular.id
+WHERE (a.paga_mensalidade = 1 OR titular.paga_mensalidade = 1)
+  AND (m.status = 'Pendente' OR (m.mes = '$mes_atual' AND m.ano = '$ano_atual'))";
 
 if ($escola_filtro) {
     $sql .= " AND a.id_escola = " . intval($escola_filtro);
@@ -33,7 +41,7 @@ while ($row = $result->fetch_assoc()) {
     // Se o aluno ainda não foi adicionado ao array, criamos a estrutura dele
     if (!isset($alunos_financeiro[$id_aluno])) {
         $alunos_financeiro[$id_aluno] = [
-            'nome_crianca' => $row['nome_crianca'],
+            'nome_crianca' => $row['nome_crianca'] . "|" .$row['nome_aluno_titular'],
             'nome_escola'  => $row['nome_escola'],
             'status_geral' => 'Pago', // Padrão inicial assumido
             'total_pendente' => 0,
